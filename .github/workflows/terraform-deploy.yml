@@ -22,6 +22,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
+      
+      - name: Install OpenTofu
+        run: |
+          curl -L https://github.com/opentofu/opentofu/releases/latest/download/opentofu_$(uname -s | tr '[:upper:]' '[:lower:]')_amd64.tar.gz -o opentofu.tar.gz
+          tar -xzf opentofu.tar.gz -C /usr/local/bin
+          opentofu version
+
 
       - name: Set up OpenTofu
         uses: opentofu/setup-tofu@v1
@@ -85,12 +92,12 @@ jobs:
       - name: Create Task Definition
         run: |
             echo '{
-            "family": "app-urbadigital-dev-task",
+            "family": "demoflisol2025-dev-task",
             "networkMode": "awsvpc",
             "requiresCompatibilities": ["FARGATE"],
             "cpu": "256",
               "memory": "512",
-              "executionRoleArn": "arn:aws:iam::485477314826:role/app-urbadigital-dev-task-execution-role",
+              "executionRoleArn": "arn:aws:iam::485477314826:role/demoflisol2025-dev-task-execution-role",
               "containerDefinitions": [
                 {
                   "name": "web",
@@ -105,20 +112,20 @@ jobs:
                   "logConfiguration": {
                     "logDriver": "awslogs",
                     "options": {
-                      "awslogs-group": "/ecs/app-urbadigital-dev-task",
+                      "awslogs-group": "/ecs/demoflisol2025-dev-task",
                       "awslogs-region": "us-east-1",
                       "awslogs-stream-prefix": "web"
                     }
                   }
                 }
               ]
-            }' > terraform/modules/ecs/task-definition.json
+            }' > opentofu/modules/ecs/task-definition.json
 
       - name: Render ECS Task Definition
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: terraform/modules/ecs/task-definition.json
+          task-definition: opentofu/modules/ecs/task-definition.json
           container-name: web
           image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY_NAME }}:latest
       
@@ -126,7 +133,7 @@ jobs:
         id: register-task
         run: |
           TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
-            --cli-input-json file://terraform/modules/ecs/task-definition.json \
+            --cli-input-json file://opentofu/modules/ecs/task-definition.json \
             --query 'taskDefinition.taskDefinitionArn' --output text)
           echo "TASK_DEFINITION_ARN=$TASK_DEFINITION_ARN" >> $GITHUB_ENV
         env:
