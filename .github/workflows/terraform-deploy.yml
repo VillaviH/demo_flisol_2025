@@ -30,10 +30,10 @@ jobs:
           opentofu version
 
 
-      - name: Set up OpenTofu
-        uses: opentofu/setup-tofu@v1
-        with:
-          tofu_version: ">= 1.0.0"
+      #- name: Set up OpenTofu
+      #  uses: opentofu/setup-tofu@v1
+      #  with:
+      #    tofu_version: ">= 1.0.0"
 
       - name: Initialize OpenTofu
         id: init
