@@ -25,7 +25,7 @@ jobs:
       
       - name: Install OpenTofu
         run: |
-          wget https://github.com/opentofu/opentofu/releases/tag/v1.9.1/opentofu-1.9.1.tar.gz
+          wget https://github.com/opentofu/opentofu/releases/download/v1.9.1/opentofu-1.9.1.tar.gz
           tar -xzf opentofu-1.9.1.tar.gz -C /usr/local/bin || { echo "Failed to extract OpenTofu"; exit 1; }
           chmod +x /usr/local/bin/opentofu
           opentofu version
