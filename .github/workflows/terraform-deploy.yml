@@ -23,12 +23,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
       
-      - name: Install OpenTofu
-        run: |
-          wget https://github.com/opentofu/opentofu/releases/download/v1.9.1/opentofu-1.9.1.tar.gz
-          tar -xzf opentofu-1.9.1.tar.gz -C /usr/local/bin || { echo "Failed to extract OpenTofu"; exit 1; }
-          chmod +x /usr/local/bin/opentofu
-          opentofu version
+      - name: OpenTofu - Setup Tofu (Liatrio)
+        uses: liatrio/setup-opentofu@v0.0.1
 
       - name: Initialize OpenTofu
         id: init
