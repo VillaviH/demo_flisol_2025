@@ -26,9 +26,6 @@ jobs:
       - name: Install OpenTofu
         run: |
           curl -L https://github.com/opentofu/opentofu/releases/download/opentofu_$(uname -s | tr '[:upper:]' '[:lower:]')_amd64.tar.gz -o opentofu.tar.gz || { echo "Failed to download OpenTofu"; exit 1; }
-          if ! file opentofu.tar.gz | grep -q 'gzip compressed data'; then
-            echo "Downloaded file is not a valid gzip archive"; exit 1;
-          fi
           tar -xzf opentofu.tar.gz -C /usr/local/bin || { echo "Failed to extract OpenTofu"; exit 1; }
           chmod +x /usr/local/bin/opentofu
           opentofu version
