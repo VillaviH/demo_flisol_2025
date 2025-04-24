@@ -27,18 +27,13 @@ jobs:
         run: |
           curl -L https://github.com/opentofu/opentofu/releases/latest/download/opentofu_$(uname -s | tr '[:upper:]' '[:lower:]')_amd64.tar.gz -o opentofu.tar.gz
           tar -xzf opentofu.tar.gz -C /usr/local/bin
+          chmod +x /usr/local/bin/opentofu
           opentofu version
-
-
-      #- name: Set up OpenTofu
-      #  uses: opentofu/setup-tofu@v1
-      #  with:
-      #    tofu_version: ">= 1.0.0"
 
       - name: Initialize OpenTofu
         id: init
-        run: tofu init -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=react-app/tofu.tfstate" -backend-config="region=${{ vars.AWS_REGION }}"
-        working-directory: terraform
+        run: tofu init -backend-config="bucket=${{ secrets.OT_STATE_BUCKET }}" -backend-config="key=react-app/tofu.tfstate" -backend-config="region=${{ vars.AWS_REGION }}"
+        working-directory: opentofu
 
       - name: Plan OpenTofu
         id: plan
