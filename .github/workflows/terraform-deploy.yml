@@ -41,7 +41,7 @@ jobs:
         run: tofu apply -auto-approve -no-color
         working-directory: opentofu
 
-  # Paso 2: Desplegar la aplicación
+  # Paso 2: Desplegar la aplicación.
   deploy-app:
     name: Deploy Application
     runs-on: ubuntu-latest
