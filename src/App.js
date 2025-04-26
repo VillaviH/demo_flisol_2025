@@ -11,7 +11,7 @@ function App() {
       <h1>DEMO FLISOL ABRIL 2025</h1>
       <h2>De Clics a Código: Infraestructura con OpenTofu:</h2>
       <br/>
-      <h3>Ejemplo de Boton</h3>  
+      <h3>Ejemplo de Boton.</h3>  
       <Button label="Enviar"/>
       <h3>Select a Date</h3>
       <Calendar value={date} onChange={(e) => setDate(e.value)} />
